@@ -46,5 +46,7 @@ render time, so no local JavaScript dependencies are needed.
 
 ## License
 
-Dual-licensed. The core library is `LGPL-3.0-or-later`; commercial terms are available — see
-<https://canvasxpress.org/license.html>.
+This Quarto extension is MIT-licensed — see [LICENSE](LICENSE). It loads the CanvasXpress
+JavaScript library, which is distributed separately under the CanvasXpress Community License
+(free to use, including commercially, while the attribution mark stays visible; a commercial
+license removes the mark) — see <https://canvasxpress.org/license.html>.
