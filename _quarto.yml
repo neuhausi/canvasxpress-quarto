@@ -2,3 +2,4 @@ project:
   render:
     - example.qmd
     - demo/demo.qmd
+    - demo/demo-r.qmd

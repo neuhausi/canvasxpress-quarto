@@ -1,0 +1,130 @@
+---
+title: "CanvasXpress in Quarto (R)"
+subtitle: "Interactive charts straight from R code chunks"
+author: "CanvasXpress"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    theme: cosmo
+    page-layout: full
+---
+
+## What this is
+
+This is the **R-native** companion to [`demo.qmd`](demo.qmd). Instead of the
+`canvasxpress` shortcode + JSON specs, every chart here is produced by an R code chunk
+using the [`canvasXpress`](https://cran.r-project.org/package=canvasXpress) package — an
+htmlwidget. In RStudio each chunk renders directly into the **Viewer** pane as you run it
+(⌘⇧⏎ / Ctrl+Shift+Enter), and again in the knitted HTML.
+
+No shortcode, no `_extensions`, no CDN — the widget bundles the library.
+
+``` r
+install.packages("canvasXpress")   # once
+```
+
+```{r}
+#| label: setup
+#| include: false
+library(canvasXpress)
+```
+
+## Bar chart
+
+`canvasXpress` takes a matrix whose row names are the variables (series) and column names
+the samples:
+
+```{r}
+#| label: bar
+y <- matrix(c(10, 14, 9, 17,
+              6,  7,  5,  9),
+            nrow = 2, byrow = TRUE,
+            dimnames = list(c("Revenue", "Cost"),
+                            c("Q1", "Q2", "Q3", "Q4")))
+
+canvasXpress(data = y,
+             graphType   = "Bar",
+             title       = "Quarterly Revenue vs Cost",
+             graphOrientation = "vertical",
+             showLegend  = TRUE)
+```
+
+## Scatter plot
+
+Points are the rows; the columns are the axis variables. `sizeBy` maps a third column to
+bubble size:
+
+```{r}
+#| label: scatter
+cars <- mtcars[1:10, c("wt", "mpg", "hp")]
+
+canvasXpress(data = cars,
+             graphType  = "Scatter2D",
+             title      = "Weight vs. MPG (bubble = horsepower)",
+             xAxis      = list("wt"),
+             yAxis      = list("mpg"),
+             xAxisTitle = "Weight (1000 lbs)",
+             yAxisTitle = "Miles per gallon",
+             sizeBy     = "hp")
+```
+
+## Heatmap
+
+Clustering is done by CanvasXpress at render time:
+
+```{r}
+#| label: heatmap
+set.seed(1)
+m <- matrix(rnorm(30), nrow = 5,
+            dimnames = list(paste0("Gene", 1:5), paste0("S", 1:6)))
+
+canvasXpress(data = m,
+             graphType         = "Heatmap",
+             title             = "Expression Heatmap",
+             samplesClustered  = TRUE,
+             variablesClustered = TRUE)
+```
+
+## Boxplot
+
+A single measurement variable split by a categorical factor. The factor is passed as a
+sample annotation (`smpAnnot`) and named in `groupingFactors`:
+
+```{r}
+#| label: boxplot
+vals <- matrix(c(5.1, 4.9, 5.5, 6.2, 5.8, 7.1, 6.9, 7.4, 8.2, 7.9, 8.5, 9.1),
+               nrow = 1,
+               dimnames = list("Measurement", paste0("s", 1:12)))
+
+grp <- data.frame(Group = rep(c("A", "B", "C"), each = 4),
+                  row.names = paste0("s", 1:12))
+
+canvasXpress(data = vals,
+             smpAnnot        = grp,
+             graphType       = "Boxplot",
+             title           = "Distribution by Group",
+             groupingFactors = list("Group"),
+             colorBy         = "Group",
+             showLegend      = TRUE)
+```
+
+## How it works
+
+- `canvasXpress(...)` returns an htmlwidget, so it renders in the RStudio Viewer, in
+  Quarto/R Markdown HTML output, and in Shiny.
+- Data is a matrix or data frame; row/column annotations become CanvasXpress `varAnnot` /
+  `smpAnnot` for grouping and coloring.
+- Because it is a self-contained widget, the library travels with the page — nothing is
+  loaded from a CDN.
+
+To render this page:
+
+``` bash
+quarto render demo/demo-r.qmd --to html
+```
+
+Or open it in **RStudio** and click **Render** (⇧⌘K). See the
+[extension README](https://github.com/neuhausi/canvasxpress-quarto) for the JSON-spec
+shortcode alternative in [`demo.qmd`](demo.qmd).
