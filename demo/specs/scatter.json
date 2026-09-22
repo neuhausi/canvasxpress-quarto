@@ -1,0 +1,31 @@
+{
+  "data": {
+    "y": {
+      "vars": ["Mazda", "Datsun", "Hornet", "Valiant", "Duster", "Merc", "Cadillac", "Fiat", "Honda", "Toyota"],
+      "smps": ["wt", "mpg", "hp"],
+      "data": [
+        [2.62, 21.0, 110],
+        [2.32, 22.8, 93],
+        [3.21, 21.4, 110],
+        [3.46, 18.1, 105],
+        [3.57, 14.3, 245],
+        [3.44, 19.2, 123],
+        [5.25, 10.4, 205],
+        [2.20, 32.4, 66],
+        [1.61, 30.4, 52],
+        [1.83, 33.9, 65]
+      ]
+    }
+  },
+  "config": {
+    "graphType": "Scatter2D",
+    "title": "Weight vs. MPG (bubble = horsepower)",
+    "xAxis": ["wt"],
+    "yAxis": ["mpg"],
+    "xAxisTitle": "Weight (1000 lbs)",
+    "yAxisTitle": "Miles per gallon",
+    "sizeBy": "hp",
+    "sizes": [5, 10, 15, 20, 25],
+    "colorScheme": "CanvasXpress"
+  }
+}

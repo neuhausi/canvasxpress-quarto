@@ -1,0 +1,19 @@
+{
+  "data": {
+    "y": {
+      "vars": ["Measurement"],
+      "smps": ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "s12"],
+      "data": [[5.1, 4.9, 5.5, 6.2, 5.8, 7.1, 6.9, 7.4, 8.2, 7.9, 8.5, 9.1]]
+    },
+    "x": {
+      "Group": ["A", "A", "A", "A", "B", "B", "B", "B", "C", "C", "C", "C"]
+    }
+  },
+  "config": {
+    "graphType": "Boxplot",
+    "title": "Distribution by Group",
+    "groupingFactors": ["Group"],
+    "colorBy": "Group",
+    "showLegend": true
+  }
+}

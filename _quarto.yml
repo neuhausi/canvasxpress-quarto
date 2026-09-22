@@ -1,0 +1,4 @@
+project:
+  render:
+    - example.qmd
+    - demo/demo.qmd

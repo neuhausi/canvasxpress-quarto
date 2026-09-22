@@ -1,0 +1,74 @@
+---
+title: "CanvasXpress in Quarto"
+subtitle: "Interactive, reproducible charts from a JSON spec"
+author: "CanvasXpress"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    theme: cosmo
+    page-layout: full
+---
+
+## What this is
+
+This document embeds live [CanvasXpress](https://canvasxpress.org) charts directly in
+a Quarto HTML page using the `canvasxpress` shortcode. Each chart below is a **real
+CanvasXpress instance** — hover for tooltips, drag to zoom, and use the toolbar
+(top-right on hover) to export, reconfigure, or reset.
+
+Every chart is defined by a small JSON spec file (the `data` + `config` arguments to
+`new CanvasXpress({...})`), so the figures are fully reproducible and version-controllable.
+
+The shortcode syntax is:
+
+``` markdown
+{{{< canvasxpress specs/bar.json >}}}
+{{{< canvasxpress spec="specs/scatter.json" width="800" height="400" >}}}
+```
+
+## Bar chart
+
+A grouped bar chart with a legend, straight from `specs/bar.json`:
+
+{{< canvasxpress specs/bar.json >}}
+
+## Scatter plot
+
+Bubble size encodes a third variable (`hp`). Drag a rectangle to zoom, double-click to
+reset:
+
+{{< canvasxpress spec="specs/scatter.json" width="800" height="450" >}}
+
+## Heatmap
+
+A clustered expression heatmap — the dendrograms are computed by CanvasXpress at render
+time:
+
+{{< canvasxpress spec="specs/heatmap.json" width="800" height="450" >}}
+
+## Boxplot
+
+Distributions grouped by a categorical factor, colored by group:
+
+{{< canvasxpress specs/boxplot.json >}}
+
+## How it works
+
+1. The extension injects the CanvasXpress CSS + JS into the document `<head>` **once**,
+   from the CDN — no manual `<script>` wiring, no local dependencies.
+2. Each `{{{< canvasxpress ... >}}}` shortcode reads its JSON spec, stamps a `renderTo`
+   target, and constructs one live chart.
+3. Only HTML output formats render the charts (other formats emit nothing), since a
+   CanvasXpress chart is an interactive `<canvas>`.
+
+To reproduce this page:
+
+``` bash
+quarto add neuhausi/canvasxpress-quarto   # once, installs the extension
+quarto render demo/demo.qmd --to html
+```
+
+See the [extension README](https://github.com/neuhausi/canvasxpress-quarto) for the full
+shortcode reference.
